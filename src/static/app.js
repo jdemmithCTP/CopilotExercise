@@ -13,6 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Clear loading message
       activitiesList.innerHTML = "";
 
+      const selectedActivity = activitySelect.value;
+      while (activitySelect.options.length > 1) {
+        activitySelect.remove(1);
+      }
+
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
         const activityCard = document.createElement("div");
@@ -21,17 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const spotsLeft = details.max_participants - details.participants.length;
         const spotsClass = spotsLeft <= 2 ? "spots-low" : "spots-available";
 
-        const participantsList = details.participants.length > 0
-          ? details.participants.map(p => `
-            <li>
-              ${p}
-              <button class="delete-participant" data-activity="${name}" data-email="${p}" title="Remove participant">
-                ✕
-              </button>
-            </li>
-          `).join("")
-          : "<li class='no-participants'><em>No participants yet</em></li>";
-
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p class="description">${details.description}</p>
@@ -39,11 +33,33 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>👥 Spots Available:</strong> <span class="${spotsClass}">${spotsLeft}/${details.max_participants}</span></p>
           <div class="participants-section">
             <strong>📋 Current Participants:</strong>
-            <ul class="participants-list">
-              ${participantsList}
-            </ul>
+            <ul class="participants-list"></ul>
           </div>
         `;
+
+        const participantsList = activityCard.querySelector(".participants-list");
+        if (details.participants.length > 0) {
+          details.participants.forEach(email => {
+            const participantItem = document.createElement("li");
+            participantItem.textContent = email;
+
+            const deleteButton = document.createElement("button");
+            deleteButton.className = "delete-participant";
+            deleteButton.dataset.activity = name;
+            deleteButton.dataset.email = email;
+            deleteButton.title = "Remove participant";
+            deleteButton.textContent = "✕";
+            participantItem.appendChild(deleteButton);
+            participantsList.appendChild(participantItem);
+          });
+        } else {
+          const noParticipants = document.createElement("li");
+          noParticipants.className = "no-participants";
+          const message = document.createElement("em");
+          message.textContent = "No participants yet";
+          noParticipants.appendChild(message);
+          participantsList.appendChild(noParticipants);
+        }
 
         activitiesList.appendChild(activityCard);
 
@@ -53,6 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
         option.textContent = name;
         activitySelect.appendChild(option);
       });
+
+      activitySelect.value = Array.from(activitySelect.options)
+        .some(option => option.value === selectedActivity) ? selectedActivity : "";
 
       // Add event listeners to delete buttons
       document.querySelectorAll(".delete-participant").forEach(button => {
