@@ -62,23 +62,120 @@ section h3 {
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.activity-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .activity-card h4 {
   margin-bottom: 10px;
   color: #0066cc;
+  font-size: 1.2em;
 }
 
 .activity-card p {
   margin-bottom: 8px;
 }
 
+.activity-card .description {
+  color: #555;
+  font-style: italic;
+}
+
+.spots-available {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.spots-low {
+  color: #e74c3c;
+  font-weight: bold;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Participants Section */
+.participants-section {
+  margin-top: 15px;
+  padding-top: 12px;
+  border-top: 2px solid #e8e8e8;
+  background-color: #f0f7ff;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.participants-section strong {
+  color: #1a237e;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.95em;
+}
+
+.participants-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.participants-list li {
+  padding: 6px 0;
+  padding-left: 0;
+  position: relative;
+  color: #555;
+  font-size: 0.9em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.participants-list li:before {
+  content: "";
+  display: none;
+}
+
+.participants-list li.no-participants {
+  padding-left: 0;
+  justify-content: flex-start;
+}
+
+.participants-list li.no-participants:before {
+  content: "";
+  display: none;
+}
+
+.delete-participant {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 30px;
+  height: 28px;
+}
+
+.delete-participant:hover {
+  background-color: #c0392b;
+}
+
 .form-group {
   margin-bottom: 15px;
 }
-
-.form-group label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
